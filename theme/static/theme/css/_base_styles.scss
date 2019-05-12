@@ -1,0 +1,39 @@
+html {
+  // KWALL gave us all their measurments based on stylesheets where the base font size was set to 10px.
+  // In order to get in before bootstrap sets the font-size in the body, this needs to be on the html element.
+  font-size: $font-size-in-html;
+  // Fix fat fonts in Chrome and Firefox on OSX. These rules have no effect on other browsers in other OSes.
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  // Ensure that the body element is at least as tall as the viewport, for various display reasons.
+  min-height: 100vh;
+}
+
+#skip-link {
+  z-index: $banner-z + 500;
+  position: fixed;
+
+  a {color: white;}
+}
+
+h1 { @include heading1 }
+h2 { @include heading2 }
+h3 { @include heading3 }
+h4 { @include heading4 }
+h5 { @include heading5 }
+h6 { @include heading6 }
+
+p { @include paragraph }
+p.lead { @include lead-paragraph }
+
+.width-1440-container {
+  @include width-1440-container;
+}
+
+// Don't underline links on hover by default. Agreed by Allison and crew in 2018-09-24 meeting.
+a:hover {
+  text-decoration: none;
+}

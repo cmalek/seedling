@@ -1,0 +1,16 @@
+# Ignore any deveopment environment artifacts
+.git
+*.sw*
+.python-version
+.DS_Store
+.idea
+*.bak
+tags
+config.codekit3
+
+# Ignore the mysql data files that the dev mysql server creates.
+sql/docker/mysql-data
+
+# Ignore any SQL dumps
+*.sql
+

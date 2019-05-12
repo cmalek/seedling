@@ -1,0 +1,343 @@
+// Responsive breakpoints
+// ----------------------
+// Bootstrap defines its breakpoint mixins as function calls that take arguments. We alias calls with each available
+// argument as a more descriptive mixin.
+@mixin landscape-phone-up {
+  // Devices that are 480px+ wide.
+  @include media-breakpoint-up(sm) {
+    @content;
+  }
+}
+
+@mixin portrait-tablet-up {
+  // Devices that are 768px+ wide.
+  @include media-breakpoint-up(md) {
+    @content;
+  }
+}
+
+@mixin landscape-tablet-up {
+  // Devices that are 1024px+ wide.
+  @include media-breakpoint-up(lg) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  // Devices that are 1440px+ wide.
+  @include media-breakpoint-up(xl) {
+    @content;
+  }
+}
+
+// For those times when you need to use a non-mobile-first media query to apply rules ONLY on portrait phones.
+// Only use when you ABSOLUTELY have to, since it violates Mobile First, which can cause havok in the rest of our CSS.
+@mixin portrait-phone-down {
+  @include media-breakpoint-down(sm) {
+    @content;
+  }
+}
+
+// ====================
+// Container Mixins
+// ====================
+@mixin width-1200-container {
+  max-width: $normal-content-width;
+  margin: 0 auto;
+}
+
+@mixin clearfix {
+  &:before, &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+
+// Text style mixins
+// -----------------
+
+// The font-family for the whole site is Helvetica, so
+// we don't need to define it here, instead we define it on <body> in
+// _base_styles.scss
+
+@mixin font-very-light {
+  font-weight: 200;
+}
+
+@mixin font-light {
+  font-weight: 300;
+}
+
+@mixin font-medium {
+  font-weight: normal;
+}
+
+@mixin font-bold {
+  font-weight: bold;
+}
+
+@mixin link-never-underline {
+  // Mix this into a link's CSS to prevent that link from ever being underlined.
+  &, &:visited, &:active, &:hover, &:focus {
+    text-decoration: none;
+  }
+}
+
+@mixin link-always-color($color) {
+  // Mix this into a link's CSS to make it stay the same color under all circumstances.
+  &, &:visited, &:active, &:hover, &:focus {
+    color: $color;
+  }
+}
+
+@mixin heading1 {
+  color: $text-color-black;
+  font-size: 3.4rem;
+  line-height: 6rem;
+  @include font-bold;
+  @include landscape-tablet-up {
+    font-size: 5rem;
+  }
+}
+
+@mixin heading2 {
+  color: $text-color-black;
+  font-size: 2.8rem;
+  line-height: 4.2rem;
+  @include font-bold;
+  @include landscape-tablet-up {
+    font-size: 4rem;
+  }
+}
+
+@mixin heading3 {
+  color: $text-color-black;
+  font-size: 2.2rem;
+  line-height: 3.2rem;
+  @include font-bold;
+  @include landscape-tablet-up {
+    font-size: 2.7rem;
+  }
+}
+
+@mixin heading4 {
+  color: $text-color-grey;
+  font-size: 1.8rem;
+  line-height: 2.6rem;
+  @include font-bold;
+  @include landscape-tablet-up {
+    font-size: 2.0rem;
+  }
+}
+
+@mixin heading5 {
+  color: $text-color-grey;
+  @include paragraph-font-sizes;
+  line-height: 2.4rem;
+  @include font-bold;
+}
+
+@mixin heading6 {
+  color: $text-color-grey;
+  font-size: 1.6rem;
+  line-height: 2rem;
+  @include font-bold;
+  text-transform: uppercase;
+  @include landscape-tablet-up {
+    font-size: 1.4rem;
+  }
+}
+
+@mixin paragraph {
+  @include paragraph-font-sizes;
+  color: $text-color-grey;
+  line-height: 2.4rem;
+  margin-bottom: 2.4rem;
+
+  @include landscape-tablet-up {
+    line-height: 2.8rem;
+    margin-bottom: 3rem;
+  }
+}
+
+@mixin lead-paragraph {
+  color: $text-color-grey;
+  // Note: the font-size and line-height are not from what the instructions
+  // say, but from what Chrome inpector says on
+  // /styleguyde/caltech/typogrpahy.html
+  font-size: 2.2rem;
+  line-height: 3.2rem;
+  @include font-light;
+  margin-bottom: 5rem;
+}
+
+@mixin blockquote {
+  @include font-very-light;
+  background-color: $color-deep-purple;
+  font-size: 2.4rem;
+  line-height: 3.6rem;
+  padding: 4.2rem 4.2rem 4.6rem 6.2rem;
+  &:before {
+    content: " “ ";
+    color: $text-color-orange;
+    @include font-bold;
+    font-size: 6rem;
+    position: absolute;
+    left: 2.1rem;
+    top: 5.6rem;
+  }
+  &:after {
+    content: " ” ";
+  }
+}
+
+// Blocks that contain text at the top level must not let that text get wider than 1340px. Thus, 1440px wide blocks need
+// 50px of side-padding, and 1600px wide blocks need enough padding to keep their edges lined up with the 1440px blocks'.
+@mixin top-level-block-with-text {
+  width: 100%;
+  padding: 0 $small-device-text-padding;
+
+  @include landscape-tablet-up {
+    padding: 0 $large-device-text-padding;
+  }
+
+  // On 1440px+ wide devices, we want the paddding on these elements to be wide enough such that the text content
+  // doesn't get wider than 1340px, regardless of how wide the element is. This rule requires that the mixed-in element
+  // have a wrapper div around it that sets a max-width, otherwise the calc() won't work right.
+  @include desktop-up {
+    padding: 0 calc((100% - 1340px)/2)
+  }
+}
+
+// Some parts of the code use <i> elements as non-italic separators, so we can use :last-of-type to hide the final one.
+@mixin separator {
+  font-style: normal;
+  &:last-of-type {
+    display: none;
+  }
+}
+
+// There's a bug in IE11 that makes it ignore box-sizing: border-box when flex elements are sized via their flex-basis.
+// The workaround for this is to convert the use of "flex: $width" to "flex: 1 1 auto; width: $width".
+@mixin IE-compatible-flex-width($width) {
+  flex: 1 1 auto;
+  width: $width;
+}
+
+@mixin breadcrumbs {
+  font-size: 1.4rem;
+  line-height: 2.1rem;
+  color: $color-warm-grey;
+  a {
+    color: $text-color-white;
+  }
+}
+
+@mixin paginator {
+  &__paginator {
+    text-align: center;
+    padding-bottom: 50px;
+    font-size: 2rem;
+
+    &__link-box {
+      width: 45px;
+      height: 45px;
+      border-top: 1px $color-cool-grey-3 solid;
+      border-bottom: 1px $color-cool-grey-3 solid;
+      border-left: 1px $color-cool-grey-3 solid;
+      font-size: 1.4rem;
+      line-height: 4.5rem;
+    }
+
+    &__last-page {
+      border-right: 1px $color-cool-grey-3 solid;
+    }
+
+    &__link {
+      @include link-never-underline;
+      @include link-always-color($color-primary-accessible);
+    }
+
+    &__current-page {
+      background-color: $color-primary-accessible;
+      border: 1px $color-primary-accessible solid;
+    }
+  }
+}
+
+@mixin watch-video-badge {
+  width: 110px;
+  height: 30px;
+  background-color: $color-bright-blue-accessible;
+  color: $text-color-white;
+  @include font-bold;
+  font-size: 1.0rem;
+  line-height: 2.8rem;
+  padding-left: 10px;
+  cursor: pointer;
+
+  &__play-button {
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+  }
+}
+
+// This is for a grid of teasers, like what is used for News and JPL News
+@mixin teaser-array {
+  &__search,
+  &__no-results {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    @include top-level-block-with-text;
+  }
+  &__articles {
+    padding-top: 28px;
+
+    @include portrait-tablet-up {
+      padding: 50px 25px 0 25px;
+    }
+
+    @include landscape-tablet-up {
+      padding: 50px 50px 0 50px;
+    }
+  }
+  @include paginator;
+}
+
+@mixin ul-reset {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// The "flush-columns-*" mixins apply negative margin to make the contents of the element become flush with the device
+// edges. This is only meant to be used on the content _inside_ a bootstrap column element, not on the column itself.
+// The default gutter width in our bootstrap is 11px, but you can pass an alternate value into these mixins to change
+// that, if this content is in a gutter-40px container, for instance.
+// TODO 2019-02-19 rrollins: THIS IS NOT CURRENTLY USED! I wrote it back when I thought it was a good solution to the
+//  "allow content to be flush to the edges of the device" problem, but decided not to go with this solution YET.
+@mixin flush-columns-portrait-phone-down($gutter: 11px) {
+  // Use this mixin on content that should remain flush to the device edges on portait phones.
+  margin-left: -$gutter;
+  margin-right: -$gutter;
+
+  @include landscape-phone-up {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+@mixin flush-columns-portrait-tablet-down($gutter: 11px) {
+  // Use this mixin on content that should only remain flush to the device edges on portait tablets and below.
+  margin-left: -$gutter;
+  margin-right: -$gutter;
+
+  @include landscape-tablet-up {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

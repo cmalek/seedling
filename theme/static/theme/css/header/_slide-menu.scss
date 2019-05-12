@@ -1,0 +1,219 @@
+@mixin slide-menu-level-1-link {
+  display: block;
+  line-height: 3.0rem;
+  font-weight: bold;
+
+  &:hover {
+    text-decoration: none;
+    background-color: $color-grey-600;
+  }
+}
+
+@mixin slide-menu-level-2-link {
+  display: block;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-bottom: 15px;
+
+  &:hover {
+    text-decoration: none;
+    background-color: $color-grey-600;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@mixin slide-menu-dropdown {
+  background-color: $color-grey-900;
+  color: $color-white;
+  border-radius: 0;
+  border: 0;
+  border-top: 4px solid $color-primary-accessible;
+  // Push the menu up so that the entire border lies within the whitespace of the header.
+  margin-top: -4px;
+}
+
+$slide-menu-width: 270px;
+$black-stripe-width: 24px;
+$slide-opener-width: 20px;
+
+.slide-menu {
+  margin-right: 24px;
+
+  &__opener {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: $color-grey-700;
+    height: 100%;
+    cursor: pointer;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  &__burger {
+    padding-left: 5px;
+    vertical-align: text-top;
+  }
+
+  &__dropdown {
+    width: $slide-menu-width;
+    // This rule is here in order to override the font-size that Bootstrap applies to .dropdown-menu.
+    font-size: 1.4rem;
+    border: none;
+    background: none;
+    // Hides the overflow so that the slide-wrapper can slide left and right to display the correct Level 2 slide
+    // within the dropdown.
+    overflow-x: hidden;
+    // rrollins 2018-08-13: This is a total hack, but I simply haven't found any other solution. The issue is that
+    // scrolling the page down when there's a very tall slide open causes the Bootstrap JS to change the translate3d()
+    // value and make the menu jump to the top of the <body>. I haven't been able to figure out why, and the one place I
+    // found where someone complained about this same problem (https://github.com/twbs/bootstrap/issues/25588) didn't
+    // have a solution that works for our code. So, I just forcibly locked the transform at the following value, which
+    // is what it getss set to when the menu initially opens.
+    transform: translate3d(-211px, 43px, 0px) !important;
+  }
+
+  &__level-1 {
+    @include slide-menu-dropdown;
+    padding: 18px 24px;
+    width: $slide-menu-width;
+  }
+
+  &__close {
+    line-height: 1.4rem;
+    cursor: pointer;
+  }
+
+  &__divider {
+    margin: 18px 0;
+    border-color: $color-grey-700;
+
+    &--post-search {
+      margin-top: 10px;
+    }
+
+    &--utility-menu {
+      margin: 16px 0;
+    }
+  }
+
+  &__utility-menu {
+    &__link {
+      @include link-always-color($color-warm-grey);
+      @include slide-menu-level-1-link;
+    }
+
+    &__item--has-submenu &__link {
+      @include link-always-color($color-cool-grey-3);
+    }
+
+    &__submenu__link {
+      @include link-always-color($color-warm-grey);
+      @include slide-menu-level-1-link;
+      font-weight: normal;
+      font-size: 1.2rem;
+      margin-left: 20px;
+    }
+  }
+
+  /////////////////////////////////
+  // Main Menu Styles and Behaviors
+  /////////////////////////////////
+  &__slide-wrapper {
+    // This wrapper's left and right sliding is what gives the Slide Menu its name. The Level 1 slide is visible by
+    // default, and when the user clicks a red arrow to open a Level 2 slide, that slide appears next to the Level 1
+    // slide, and then the entire slide-wrapper shifts left one slide-width. This brings the Level 2 slide into view
+    // within the slide-menu__dropdown.
+    // Then, clicking the "< Back" button within the Level 2 slide causes the wrapper to slide back into place, after
+    // which the Level 2 slide is hidden again by the 'transitionend' event listener we set up in theme.js.
+    transform: translateX(0);
+    transition: .2s transform linear;
+    // The slide-wrapper needs to be wide enough to accomodate up to 2 slides at a time, so that they can sit next to
+    // each other within the wrapper without interfering with either's width due to the flexbox rules on the wrapper.
+    width: $slide-menu-width * 2;
+
+    &.js-slid {
+      transform: translateX(-$slide-menu-width);
+    }
+  }
+
+  &__level-1 {
+    &__link {
+      @include link-always-color($color-grey-150);
+      @include slide-menu-level-1-link;
+      font-size: 1.6rem;
+      width: calc(100% - #{$slide-opener-width});
+    }
+
+    &__slide-opener {
+      color: $color-primary-accessible;
+      width: $slide-opener-width;
+      text-align: center;
+      cursor: e-resize;
+      // This vertically centers the chevron in the block.
+      padding-top: 7px;
+    }
+  }
+
+  &__level-2 {
+    display: none;
+    width: $slide-menu-width;
+
+    &.js-active {
+      display: flex;
+    }
+
+    &__black-stripe {
+      @include slide-menu-dropdown;
+      width: $black-stripe-width;
+      cursor: w-resize;
+    }
+
+    &__content {
+      @include slide-menu-dropdown;
+      padding: 18px 24px;
+      background-color: $color-grey-850;
+      width: $slide-menu-width - $black-stripe-width;
+    }
+
+    &__title {
+      padding-bottom: 18px;
+      color: $color-grey-150;
+      font-size: 2.0rem;
+      line-height: 2.0rem;
+      font-weight: bold;
+    }
+
+    &__back-button {
+      color: $color-grey-150;
+      cursor: w-resize;
+    }
+
+    &__link {
+      @include link-always-color($color-grey-150);
+      @include slide-menu-level-2-link;
+      font-size: 1.6rem;
+    }
+  }
+
+  &__level-3 {
+    &__link {
+      @include link-always-color($color-warm-grey);
+      @include slide-menu-level-2-link;
+      font-size: 1.4rem;
+      padding-left: 10px;
+    }
+  }
+
+  .js-menu-only {
+    cursor: context-menu;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}

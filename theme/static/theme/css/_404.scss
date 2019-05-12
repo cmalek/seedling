@@ -1,0 +1,15 @@
+.content-404 {
+  @include width-1440-container;
+  padding: 0 50px 50px;
+  font-size: 1.8rem;
+
+  &__search-results {
+    margin-bottom: 3em;
+  }
+
+  &__search-form {
+    &__field {
+      min-width: 400px;
+    }
+  }
+}

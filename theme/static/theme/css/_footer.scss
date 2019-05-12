@@ -1,0 +1,150 @@
+.footer {
+  position: relative;
+  // Places the background tile image over top of a solid deep blue background, then positions the image so it lines up
+  // with the torch-box at all screen widths.
+  background-color: $color-deep-blue;
+  background-image: url(../img/bg-footer.png);
+  background-position: top center;
+  @include top-level-block-with-text;
+
+  &__torch-box {
+    // Drawns a 90px-by-90px white square in the top middle of the footer, then rotates it into a diamond shape. It acts
+    // as the backing for the torch icon.
+    position: absolute;
+    top: 0;
+    left: 50%;
+    background-color: $color-white;
+    height: 90px;
+    width: 90px;
+    z-index: $banner-z + 100;
+    // The transate() call centers the torch-box horizontally (along with the 'left: 50%' rule) and then pushes it up
+    // 50%. Then the rotate() spins it so it's a diamond rather than a square.
+    transform: translate(-50%, -50%) rotate(45deg);
+    @media print {
+      // Hide this when printing.
+      display: none !important;
+    }
+  }
+
+  &__torch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: $banner-z + 200;
+    // The original image is much larger than this, but 70px height seems to render it just like the styleguide.
+    height: 70px;
+    // Horizontally center the image (along with the 'left: 50%' rule), then move it up so the torch handle is lined
+    // up with the edge of the footer.
+    transform: translate(-50%, -50px);
+    @media print {
+      // Hide this when printing.
+      display: none !important;
+    }
+  }
+
+  &__left {
+    text-align: center;
+    padding-top: 70px;
+    flex-grow: 1;
+
+    @include landscape-phone-up {
+      padding-top: 64px;
+      text-align: left;
+    }
+
+    &__caltech-wordmark {
+      width: 110px;
+    }
+
+    &__caltech-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: $color-white;
+      margin-top: 10px;
+    }
+  }
+
+  &__right {
+    text-align: center;
+    padding-top: 20px;
+    flex-grow: 1;
+
+    @include landscape-phone-up {
+      padding-top: 64px;
+      text-align: right;
+    }
+
+    @include desktop-up {
+      right: 50px;
+    }
+
+    &__contact-info-row {
+      font-size: 1.4rem;
+      line-height: 2.2rem;
+      color: $color-white;
+
+      @include landscape-phone-up {
+        margin-right: 30px;
+      }
+      @include landscape-tablet-up {
+        font-size: 1.5rem;
+      }
+    }
+
+    &__contact-info-item {
+      padding-right: 15px;
+      display: inline-block;
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+    &__map-marker {
+      width: 20px;
+
+      @include landscape-phone-up {
+        float: right;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  &__menu {
+    padding: 20px 0;
+    flex-grow: 1;
+    @include landscape-phone-up {
+      padding-bottom: 48px;
+      flex-grow: 2;
+    }
+    @media print {
+      // Hide this when printing.
+      display: none !important;
+    }
+
+    &__link {
+      font-size: 1.4rem;
+      line-height: 2.8rem;
+      @include link-always-color($color-cool-grey-3);
+      @include link-never-underline;
+      display: inline-block;
+
+      &::after {
+        content: '|';
+        padding: 0 8px;
+      }
+
+      &:last-child::after {
+        display: none;
+      }
+
+      &--login {
+        @include link-always-color($color-white);
+        @include font-bold;
+      }
+    }
+  }
+}
+
+body.bare-page .footer {
+  display: none !important;
+}
