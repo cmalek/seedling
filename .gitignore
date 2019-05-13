@@ -106,7 +106,7 @@ venv.bak/
 # Development artifacts
 .python-version
 .DS_Store
-sql/docker/mysql-data
+run/sql/docker/mysql-data
 /*.sql
 config.codekit3
 

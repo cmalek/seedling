@@ -1,20 +1,36 @@
 # Django and third-party apps
-django==2.1.7
+django==2.1.8
 django-xff==1.3.0
+django-analytical==2.5.0
+django-environ==0.4.5
+django-model-utils==3.1.2
+django-allauth==0.39.1
+django-crispy-forms==1.7.2
+django-compressor==2.2
 
 # Web server
 gunicorn==19.9.0
 
+# Django REST Framework
+djangorestframework==3.9.4
+coreapi==2.3.3
+
 # Other utils
-environs==4.1.2
-mysqlclient==1.3.13
+pytz==2019.1
+python-slugify==3.0.2
+Pillow==6.0.0
+rcssmin==1.0.6 
+argon2-cffi==19.1.0 
+whitenoise==4.1.2
+mysqlclient==1.3.12
 structlog==17.2.0
 colorama==0.3.7
-PyYAML==3.12
 ipython==7.1.0
 
 # Deployment
 bumpversion==0.5.3
+tox
+Sphinx
 
 # Unpinned
 raven
@@ -33,3 +49,4 @@ testfixtures==4.10.0
 autopep8
 flake8
 pycodestyle
+coverage
