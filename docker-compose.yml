@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  multitenant:
+  seedling:
     image: seedling:latest
     container_name: "seedling"
     hostname: "seedling"
@@ -9,30 +9,30 @@ services:
       - 80:80
       - 443:443
     env_file:
-      # Your dev environment definition file must exist at this location on your development machine.
-      - "/etc/context.d/seedling.env"
+      # Your dev environment definition file must exist at this location
+      # on your development machine.
+      - ".env"
     depends_on:
-      # We still need wait-for-it.sh, even with these dependencies, because depends_on only ensures that the containers
-      # are STARTED before multitenant. Not that they're "ready".
       - mysql
-      - elastic
-      - redis
     command:
-      bin/wait-for-it.sh mysql:3306 --and bin/wait-for-it.sh -t 30 elastic:9200 --and /usr/bin/supervisord
-
+      bin/wait-for-it.sh mysql:3306 --and /usr/bin/supervisord
+    volumes:
+      - .:/seedling
 
   mysql:
     image: mysql:5.6.34
     container_name: "db-seedling"
+    hostname: "db-seedling"
     environment:
       MYSQL_ROOT_PASSWORD: root_password
     ports:
-      # Expose port 3306 on the container as port 3307 on the host, so that sql clients can connect to it.
+      # Expose port 3306 on the container as port 3307 on the host,
+      # so that sql clients can connect to it.
       - 3307:3306
     volumes:
-      - ./sql/docker/mysql-data:/var/lib/mysql
-      - ./sql/docker/my.cnf:/etc/mysql/conf.d/dev.cnf
-      - ./sql/docker:/docker-entrypoint-initdb.d
+      - ./run/sql/docker/mysql-data:/var/lib/mysql
+      - ./run/sql/docker/my.cnf:/etc/mysql/conf.d/dev.cnf
+      - ./run/sql/docker:/docker-entrypoint-initdb.d
 
   mailhog:
     image: mailhog/mailhog:v1.0.0

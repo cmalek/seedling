@@ -8,9 +8,10 @@
 tags
 config.codekit3
 
-# Ignore the mysql data files that the dev mysql server creates.
-run/sql/docker/mysql-data
+# Ignore the sql folder and the static and media files from dev
+run/sql
+run/media/*
+run/static/*
 
 # Ignore any SQL dumps
 *.sql
-

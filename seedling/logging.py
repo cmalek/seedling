@@ -1,15 +1,16 @@
+from io import StringIO
+import re
 from six import string_types
+
+import structlog
+from structlog.dev import (_MISSING, _ColorfulStyles, _PlainStyles)
 try:
     import colorama
 except ImportError:
     colorama = None
 
-import structlog
-from structlog.dev import (_MISSING, _ColorfulStyles, _PlainStyles)
-
-
-from .modeldict import model_to_dict
 from .utils import get_current_request
+
 
 logger = structlog.get_logger('seedling')
 
@@ -18,16 +19,18 @@ def request_context_logging_processor(_, __, event_dict):
     """
     Adds extra runtime event info to our log messages based on the current request.
 
-        ``username``: (string) the username of the logged in user, if user is logged in.
-        ``site``: (string) the hostname of the current Site. Logs as 'celery/manage.py' when there's no current request.
-        ``remote_ip``: the REMOTE_ADDR address. django-xff will handle properly setting this if we're behind a proxy
-        ``superuser``: True if the current User is a superuser
+      ``username``: (string) the username of the logged in user, if user is logged in.
+      ``site``: (string) the hostname of the current Site. Logs as 'celery/manage.py' when there's no current request.
+      ``remote_ip``: the REMOTE_ADDR address. django-xff will handle properly setting this if we're behind a proxy
+      ``superuser``: True if the current User is a superuser
 
     Does not overwrite any event info that's already been set in the logging call.
     """
     request = get_current_request()
     if request is not None:
         try:
+            # django-xff will set this appropriately to the actual client IP when
+            # we are behind a proxy
             client_ip = request.META['REMOTE_ADDR']
         except AttributeError:
             # Sometimes there will be a current request, but it's not a real request (during tests). If we can't get
@@ -36,10 +39,6 @@ def request_context_logging_processor(_, __, event_dict):
         event_dict.setdefault('remote_ip', client_ip)
         event_dict.setdefault('username', request.user.username or 'AnonymousUser')
         event_dict.setdefault('superuser', request.user.is_superuser)
-    else:
-        # We're in a celery app or a manage.py command, which means there is no remote_ip, logged-in user, or
-        # "current site" so we log the "site" as 'celery/manage.py'.
-        event_dict.setdefault('site', 'celery/manage.py')
     return event_dict
 
 
@@ -79,6 +78,7 @@ class ConsoleRenderer(object):
         no way to customize it. -- CPM
 
     Render `event_dict`, possibly in colors, and ordered.
+
     :param bool colors: Use colors for a nicer output.
     :param bool repr_native_str: When ``True``, :func:`repr()` is also applied
         to native strings (i.e. unicode on Python 3 and bytes on Python 2).
@@ -176,4 +176,3 @@ class ConsoleRenderer(object):
         else:
             msg = sio.getvalue()
         return msg
-

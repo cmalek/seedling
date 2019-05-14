@@ -29,6 +29,16 @@ if os.path.exists(ENV_FILE_PATH):
 
 DEBUG = False
 
+# GENERAL
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+SECRET_KEY = env(
+    "DJANGO_SECRET_KEY",
+    default="Z4peQSPAoo8fruA7pRXt2LefJD2lqYvXtgPFxF2hAeUd7NGOpA8fAt3UpnXpJ019",
+)
+# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
+
 # LOCALIZATION
 # ------------------------------------------------------------------------------
 LANGUAGE_CODE = 'en-us'
@@ -42,12 +52,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {"default": env.db("DATABASE_URL")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
+DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 
-if DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
+if ('ENGINE' in DATABASES['default'] and DATABASES['default']['ENGINE'] == 'django.db.backends.mysql'):
     DATABASES["default"]["OPTIONS"] = {
         'sql_mode': 'STRICT_TRANS_TABLES',
         'isolation_level': 'read committed'
     }
+
+# CACHES
+# ------------------------------------------------------------------------------
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "",
+    }
+}
 
 # URLS
 # ------------------------------------------------------------------------------
@@ -73,11 +93,10 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "gunicorn",
     "rest_framework",
 ]
 LOCAL_APPS = [
-    "apps.auth",
+    "users",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -117,11 +136,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
-# https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
-
-ROOT_URLCONF = 'seedling.urls'
-WSGI_APPLICATION = 'seedling.wsgi.application'
 
 # MIDDLEWARE
 # ------------------------------------------------------------------------------
@@ -200,8 +214,14 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # SECURITY
 # ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#secure-proxy-ssl-header
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+# https://docs.djangoproject.com/en/dev/ref/settings/#secure-ssl-redirect
+SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
 # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
 SESSION_COOKIE_HTTPONLY = True
+# https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-secure
+SESSION_COOKIE_SECURE = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-secure
@@ -217,11 +237,26 @@ X_FRAME_OPTIONS = "DENY"
 EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
 )
+# https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
+DEFAULT_FROM_EMAIL = env(
+    "DJANGO_DEFAULT_FROM_EMAIL",
+    default="Seedling <noreply@placodermi.org>"
+)
+# https://docs.djangoproject.com/en/dev/ref/settings/#server-email
+SERVER_EMAIL = env(
+    "DJANGO_SERVER_EMAIL",
+    default=DEFAULT_FROM_EMAIL
+)
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
+EMAIL_SUBJECT_PREFIX = env(
+    "DJANGO_EMAIL_SUBJECT_PREFIX",
+    default="[Seedling]"
+)
 
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
-ADMIN_URL = "admin/"
+ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [("""Chris Malek""", "cmalek@placodermi.org")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
@@ -258,20 +293,14 @@ pre_chain = [
 ]
 
 
-LOGGING_CONFIG = None
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
     'handlers': {
-        'structlog_console': {
+        'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'plain'
-        },
-        'devel_console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'filters': ['require_development_true']
+            'formatter': 'structlog'
         },
         'null': {
             'level': 'DEBUG',
@@ -279,15 +308,10 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django': {
-            # When we set LOGGING_CONFIG = None above, we prevented the 'django' logger from being configured.
-            # Thus, we must define it here so that we can configure it to only display log messages when DEVELOPMENT is
-            # True (its default configuration makes it filter on DEBUG). This makes it print tracebacks and a few other
-            # things during devel even when working with stuff that requires DEBUG to be False, and it retains its
-            # original silence while running the tests. This is primarily important for printing tracebacks, which do
-            # not print if sent to the structlog_console handler (probably because they are multiple lines).
-            'handlers': ['devel_console'],
-            'level': 'INFO',
+        "django.db.backends": {
+            "level": "ERROR",
+            "handlers": ["console"],
+            "propagate": False,
         },
         'django.security.DisallowedHost': {
             # Don't log attempts to access the site with a spoofed HTTP-HOST header. It massively clutters the logs,
@@ -299,11 +323,12 @@ LOGGING = {
     'root': {
         # Set up the root logger to print to stderr using structlog. This will make all otherwise unconfigured loggers
         # print through structlog processor.
-        'handlers': ['structlog_console'],
+        'handlers': ['console'],
         'level': 'INFO',
     },
     'formatters': {
-        'plain': {
+        # Set up a special formatter for our structlog output
+        'structlog': {
             '()': structlog.stdlib.ProcessorFormatter,
             'processor': ConsoleRenderer(
                 colors=env.bool('COLORED_LOGGING', default=False),
@@ -332,9 +357,9 @@ ACCOUNT_EMAIL_REQUIRED = True
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_ADAPTER = "apps.auth.adapters.AccountAdapter"
+ACCOUNT_ADAPTER = "seedling.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-SOCIALACCOUNT_ADAPTER = "apps.auth.adapters.SocialAccountAdapter"
+SOCIALACCOUNT_ADAPTER = "seedling.users.adapters.SocialAccountAdapter"
 
 # django-compressor
 # ------------------------------------------------------------------------------

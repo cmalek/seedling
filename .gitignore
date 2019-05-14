@@ -106,9 +106,11 @@ venv.bak/
 # Development artifacts
 .python-version
 .DS_Store
-run/sql/docker/mysql-data
 /*.sql
 config.codekit3
+run/sql/docker/mysql-data
+run/static/*
+run/media/*
 
 # Vim
 *.sw*

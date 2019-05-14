@@ -1,52 +1,60 @@
 # Django and third-party apps
-django==2.1.8
-django-xff==1.3.0
-django-analytical==2.5.0
-django-environ==0.4.5
-django-model-utils==3.1.2
-django-allauth==0.39.1
-django-crispy-forms==1.7.2
-django-compressor==2.2
+# ------------------------------------------------------------------------------
+django==2.1.8                                 # https://www.djangoproject.com/
+django-xff==1.3.0                             # https://github.com/ferrix/xff/
+django-analytical==2.5.0                      # https://github.com/jazzband/django-analytical
+django-environ==0.4.5                         # https://github.com/joke2k/django-environ
+django-model-utils==3.1.2                     # https://github.com/jazzband/django-model-utils
+django-allauth==0.39.1                        # https://github.com/pennersr/django-allauth
+django-crispy-forms==1.7.2                    # https://github.com/django-crispy-forms/django-crispy-forms
+django-compressor==2.2                        # https://github.com/django-compressor/django-compressor
+django-crequest==2018.5.11                    # https://github.com/Alir3z4/django-crequest
+django-redis==4.10.0                          # https://github.com/niwinz/django-redis
 
 # Web server
-gunicorn==19.9.0
+# ------------------------------------------------------------------------------
+gunicorn==19.9.0                              # https://github.com/benoitc/gunicorn
 
 # Django REST Framework
-djangorestframework==3.9.4
-coreapi==2.3.3
+# ------------------------------------------------------------------------------
+djangorestframework==3.9.4                    # https://github.com/encode/django-rest-framework
+coreapi==2.3.3                                # https://github.com/core-api/python-client
 
 # Other utils
-pytz==2019.1
-python-slugify==3.0.2
-Pillow==6.0.0
-rcssmin==1.0.6 
-argon2-cffi==19.1.0 
-whitenoise==4.1.2
-mysqlclient==1.3.12
-structlog==17.2.0
-colorama==0.3.7
-ipython==7.1.0
+# ------------------------------------------------------------------------------
+Pillow==6.0.0                                 # https://github.com/python-pillow/Pillow
+argon2-cffi==19.1.0                           # https://github.com/hynek/argon2_cffi
+colorama==0.3.7                               # https://github.com/tartley/colorama
+ipython==7.1.0                                # https://github.com/ipython/ipython
+mysqlclient==1.3.12                           # https://github.com/PyMySQL/mysqlclient-python
+python-slugify==3.0.2                         # https://github.com/un33k/python-slugify
+pytz==2019.1                                  # https://github.com/stub42/pytz
+rcssmin==1.0.6                                # https://github.com/ndparker/rcssmin
+redis==3.2.1                                  # https://github.com/antirez/redis
+sentry-sdk==0.7.14                            # https://github.com/getsentry/sentry-python
+structlog==17.2.0                             # https://github.com/hynek/structlog
 
 # Deployment
-bumpversion==0.5.3
-tox
-Sphinx
+# ------------------------------------------------------------------------------
+bumpversion==0.5.3                            # https://github.com/peritus/bumpversion
+Sphinx==2.0.1                                 # https://github.com/sphinx-doc/sphinx
 
-# Unpinned
-raven
+# Development
+# ------------------------------------------------------------------------------
+django-debug-toolbar==1.11                    # https://github.com/jazzband/django-debug-toolbar
+django-debug-toolbar-template-profiler==1.0.2 # https://github.com/node13h/django-debug-toolbar-template-profiler
+django-queryinspect==1.0.0                    # https://github.com/dobarkod/django-queryinspect
+django-extensions==2.1.6                      # https://github.com/django-extensions/django-extensions
+autopep8==0.8                                 # https://github.com/hhatto/autopep8
+flake8==3.7.5                                 # https://github.com/PyCQA/flake8
+pycodestyle==2.5.0                            # https://github.com/PyCQA/pycodestyle
 
-# Testing/development
-pydevd-pycharm~=191.6605.12
-django-debug-toolbar==1.10.1
-django-debug-toolbar-template-profiler
-django-extensions==2.1.4
-django-queryinspect==1.0.0
-factory_boy==2.8.1
-loremipsum==1.0.5
-mock==2.0.0
-nose==1.3.7
-testfixtures==4.10.0
-autopep8
-flake8
-pycodestyle
-coverage
+# Testing
+# ------------------------------------------------------------------------------
+factory-boy==2.12.0                           # https://github.com/FactoryBoy/factory_boy
+mypy==0.701                                   # https://github.com/python/mypy
+pytest==4.5.0                                 # https://github.com/pytest-dev/pytest
+pytest-sugar==0.9.2                           # https://github.com/Frozenball/pytest-sugar
+pytest-django==3.4.8                          # https://github.com/pytest-dev/pytest-django
+django-coverage-plugin==1.6.0                 # https://github.com/nedbat/django_coverage_plugin
+coverage==4.5.3                               # https://github.com/nedbat/coveragepy
