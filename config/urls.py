@@ -11,7 +11,6 @@ urlpatterns = [
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),
     # Django Admin, use {% url 'admin:index' %}
-    path('jet/', include('jet.urls', 'jet')),  # https://jet.readthedocs.io/en/latest/install.html
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("seedling.users.urls", namespace="users")),
@@ -44,4 +43,3 @@ if settings.DEBUG:
         import debug_toolbar
 
         urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
-

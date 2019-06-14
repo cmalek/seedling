@@ -87,8 +87,9 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
-    "jet",  # https://jet.readthedocs.io/en/latest/install.html
+    "baton",
     "django.contrib.admin",
+    "baton.autodiscover"
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -96,9 +97,11 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "rest_framework",
+    "users",
+    "multitenancy",
+    "reversion",
 ]
 LOCAL_APPS = [
-    "users",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -154,8 +157,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    # Enables the use of the get_current_request() and get_current_user() functions.
+    # Enables the use of the multitenancy.utils.get_current_site() function
     'crequest.middleware.CrequestMiddleware',
+    # Our middleware
+    'multitenancy.middleware.SiteSelectingMiddleware',
 ]
 
 # STATIC
@@ -373,7 +378,7 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 
 # django-xff
 # ------------------------------------------------------------------------------
-XFF_TRUSTED_PROXY_DEPTH = env.int('XFF_TRUSTED_PROXY_DEPTH', default=0)
+XFF_TRUSTED_PROXY_DEPTH = env.int('XFF_TRUSTED_PROXY_DEPTH', default=1)
 XFF_HEADER_REQUIRED = env.bool('XFF_HEADER_REQUIRED', default=False)
 
 # django-bleach
