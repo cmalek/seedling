@@ -3,7 +3,7 @@ from django.apps import AppConfig
 
 class CoreConfig(AppConfig):
     name = 'core'
-    verbose_name = 'Seedling Core'
+    verbose_name = 'Core'
     ready_is_done = False
 
     def ready(self):

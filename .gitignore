@@ -116,3 +116,4 @@ run/media/*
 *.sw*
 *.bak
 tags
+sql/docker/mysql-data

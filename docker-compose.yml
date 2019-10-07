@@ -31,9 +31,9 @@ services:
       # so that sql clients can connect to it.
       - 3307:3306
     volumes:
-      - ./run/sql/docker/mysql-data:/var/lib/mysql
-      - ./run/sql/docker/my.cnf:/etc/mysql/conf.d/dev.cnf
-      - ./run/sql/docker:/docker-entrypoint-initdb.d
+      - ./sql/docker/mysql-data:/var/lib/mysql
+      - ./sql/docker/my.cnf:/etc/mysql/conf.d/dev.cnf
+      - ./sql/docker:/docker-entrypoint-initdb.d
 
   mailhog:
     image: mailhog/mailhog:v1.0.0

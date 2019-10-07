@@ -1,7 +1,6 @@
-RAWVERSION = $(filter-out __version__ = , $(shell grep __version__ seedling/__init__.py))
-VERSION = $(strip $(shell echo $(RAWVERSION)))
+VERSION = 0.1.0
 PACKAGE = seedling
-REGISTRY = 467892444047.dkr.ecr.us-west-2.amazonaws.com/caltech-imss-ads
+REGISTRY = cmalek
 
 # This .PHONY directive tells make that it should not care about any files/directories whose names match our make
 # command's names. If this were not here, make would claim "'build' is up to date!" if there were a file/folder called
@@ -50,6 +49,15 @@ dev:
 dev-detached:
 	docker-compose up -d
 
+logall:
+	docker-compose logs -f
+
+log:
+	docker logs -f commuter_survey
+
+exec:
+	docker exec -it commuter_survey /bin/bash
+
 docker-clean:
 	docker stop $(shell docker ps -a -q)
 	docker rm $(shell docker ps -a -q)
@@ -60,9 +68,6 @@ docker-destroy-db:
 docker-destroy: docker-clean docker-destroy-db
 	docker rmi -f $(shell docker images -q | uniq)
 	docker image prune -f; docker volume prune -f; docker container prune -f
-
-test: build
-	docker-compose -f docker-compose.yml -f docker-compose.test.yml up --abort-on-container-exit
 
 ctags:
 	# This sets up the ./tags file for vim that includes all packages in the virtualenv

@@ -7,6 +7,9 @@ from ..core.models import AuditableMixin
 
 
 class PlantType(AuditableMixin, SiteSpecificModel):
+    """
+    This is a lookup table for plant type.
+    """
 
     name = models.CharField(max_length=32)
     slug = AutoSlugField(populate_from=['name'])
