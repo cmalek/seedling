@@ -1,0 +1,85 @@
+/* ==================
+   Page Header
+   ================== */
+
+.page__header {
+  margin: 1.5rem 0 0 0;
+  @include mobile-padding;
+  @include portrait-tablet-up {
+    height: 3em;
+    margin: 2em 0;
+  }
+
+  &__logo {
+    width: 120px;
+    display: inline-block;
+    img {
+      width: 100%;
+    }
+    @include portrait-tablet-up {
+      width: 160px;
+      img {
+        vertical-align: baseline;
+      }
+    }
+  }
+
+  &__title {
+    @include black-links();
+    width: 100%;
+    font-size: 2.3rem;
+    @include landscape-phone-up {
+        font-size: 3.2rem;
+        margin: 0 0 -22px 2rem;
+    }
+  }
+}
+
+/* =========================================
+   The container for our actual page content
+   ========================================= */
+
+.responsive-container {
+  width: 100%;
+  @include desktop-up {
+    width: $content_width;
+  }
+  margin: auto;
+}
+
+.page {
+  // Make .page take up as much vertical space as possible in the
+  // viewport, pushing the footer to the bottom.  That's what the "1"
+  // below does.
+  flex: 1 0 auto;
+
+  &__content {
+    @include mobile-padding;
+    margin-bottom: 3em;
+  }
+
+  &__navigation {
+    margin-bottom: 3rem;
+  }
+}
+
+/* ==================
+   Page Footer
+   ================== */
+
+.footer {
+  font-size: 1.3rem;
+
+  &__content {
+    padding: 10px;
+
+    &__contact {
+      line-height: 1.4;
+      color: #eee;
+    }
+
+    &__links {
+      @include all-caps-horizontal-links();
+    }
+  }
+}

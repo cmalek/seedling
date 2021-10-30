@@ -1,0 +1,222 @@
+/* ===================================================================
+   Use these in your CSS via the SCSS mixin syntax.  Example:
+
+   @import "_mixins.less";
+
+   .my_title {
+     @include serif-title();
+   }
+=================================================================== */
+
+// Responsive breakpoints
+// ----------------------
+// Bootstrap defines its breakpoint mixins as function calls that take arguments. We alias calls with each available
+// argument as a more descriptive mixin.
+@mixin landscape-phone-up {
+  // Devices that are 480px+ wide.
+  @include media-breakpoint-up(sm) {
+    @content;
+  }
+}
+
+@mixin portrait-tablet-up {
+  // Devices that are 768px+ wide.
+  @include media-breakpoint-up(md) {
+    @content;
+  }
+}
+
+@mixin landscape-tablet-up {
+  // Devices that are 1024px+ wide.
+  @include media-breakpoint-up(lg) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  // Devices that are 1440px+ wide.
+  @include media-breakpoint-up(xl) {
+    @content;
+  }
+}
+
+// For those times when you need to use a non-mobile-first media query to apply rules ONLY on portrait phones.
+// Only use when you ABSOLUTELY have to, since it violates Mobile First, which can cause havok in the rest of our CSS.
+@mixin portrait-phone-down {
+  @include media-breakpoint-down(sm) {
+    @content;
+  }
+}
+
+// This is essentially only for the NewsInfoBlock which has special behavior only
+// on landscape phones and portrait tablets
+@mixin landscape-phone-portrait-tablet-only {
+  @media (min-width: $medium-viewport) and (max-width: $large-viewport - 1) {
+    @content;
+  }
+}
+
+// This is essentially only for the TwoColumnLayout on the home page which has special behavior only
+// on greater than 1024 but less than 1200
+@mixin landscape-ipadpro-up {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin black-links() {
+  a, a:visited {
+    color:           $color-black;
+    text-decoration: none;
+  }
+}
+
+/*
+  Turn a <ul> or <ol> into a set of all caps,
+  white links, horizontally oriented.  Usage:
+
+  .my-nav {
+    @include all-caps-horizontal-links();
+  }
+
+*/
+
+@mixin all-caps-horizontal-links() {
+  margin: 0;
+  font-size: 0.8em;
+  a, a:visited {
+    color: $color-white!important;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  li {
+    display: inline-block;
+    padding-left: 1.25em;
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+}
+
+/*
+  Center something in the browser window, and make it
+  be @responsive_grid_w wide.  Usage:
+
+  .my-div {
+    @include page-width-centered();
+  }
+*/
+@mixin page-width-centered() {
+  width: $content_width;
+  margin: auto;
+}
+
+@mixin form-bold-labels() {
+  label {
+    font-weight: bold;
+  }
+}
+
+@mixin form-full-width-text-inputs() {
+  input[type=text],
+  input[type=url],
+  textarea
+  {
+    width: 100%;
+  }
+}
+
+
+@mixin mobile-padding() {
+  padding-left: 10px;
+  padding-right: 10px;
+  @include desktop-up {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@mixin paragraph-font-sizes {
+  font-size: 1.6rem;
+  @include landscape-tablet-up {
+    font-size: 1.8rem;
+  }
+}
+
+// ====================
+// Container Mixins
+// ====================
+
+// Text style mixins
+// -----------------
+
+// The font-family for the whole site is Helvetica, so
+// we don't need to define it here, instead we define it on <body> in
+// _base_styles.scss
+
+@mixin font-very-light {
+  font-weight: 200;
+}
+
+@mixin font-light {
+  font-weight: 300;
+}
+
+@mixin font-medium {
+  font-weight: normal;
+}
+
+@mixin font-bold {
+  font-weight: bold;
+}
+
+@mixin heading1 {
+  color: $color-black-text;
+  font-size: 3.4rem;
+  line-height: 6rem;
+}
+
+@mixin heading2 {
+  color: $color-black-text;
+  font-size: 2.8rem;
+  line-height: 4.2rem;
+}
+
+@mixin heading3 {
+  color: $color-black-text;
+  font-size: 2.2rem;
+  line-height: 3.2rem;
+}
+
+@mixin heading4 {
+  font-size: 1.8rem;
+  line-height: 2.6rem;
+  @include font-bold;
+}
+
+@mixin heading5 {
+  line-height: 2.4rem;
+  @include font-bold;
+}
+
+@mixin heading6 {
+  font-size: 1.6rem;
+  line-height: 2rem;
+  @include font-bold;
+  @include landscape-tablet-up {
+    font-size: 1.4rem;
+  }
+}
+
+@mixin paragraph {
+  color: $color-black-text;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  margin-bottom: 2.4rem;
+
+  @include landscape-tablet-up {
+    line-height: 2.8rem;
+    margin-bottom: 3rem;
+  }
+}
+

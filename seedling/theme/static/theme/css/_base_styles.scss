@@ -1,0 +1,55 @@
+html {
+  font-size: $font-size-in-html;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @include landscape-phone-up {
+    height: 100%;
+  }
+  font-family: $font_vaud;
+}
+
+body {
+  // Ensure that the body element is at least as tall as the viewport, for various display reasons.
+  min-height: 100vh;
+  height: 100%;
+  font-size: 1.6rem;
+  // Turn the body into a flex column so we can make our .page and footer sections work properly
+  display: flex;
+  flex-direction: column;
+  font-family: Helvetica, sans-serif;
+}
+
+#skip-link {
+  z-index: $banner-z + 500;
+  position: fixed;
+
+  a {
+    color: white;
+  }
+}
+
+// This is super dumb, but the WAVE tool will complain about _small text_ in divs that are specifically intended to ONLY
+// be read aloud by screen readers. This rule is just to appease the tool.
+.sr-only {
+  font-size: 15px;
+}
+
+h1 { @include heading1 }
+h2 { @include heading2 }
+h3 { @include heading3 }
+h4 { @include heading4 }
+h5 { @include heading5 }
+h6 { @include heading6 }
+p { @include paragraph }
+
+pre {
+  font-size: 1.2rem;
+  margin-left: 2rem;
+  margin-bottom: 2.4rem;
+
+  @include landscape-tablet-up {
+    font-size: 1.4rem;
+    margin-left: 3rem;
+    margin-bottom: 3rem;
+  }
+}

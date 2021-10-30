@@ -1,0 +1,97 @@
+// Responsive viewports
+// --------------------
+
+$small-viewport:               480px;
+$medium-viewport:              768px;
+$large-viewport:               1024px;
+$extra-large-viewport:         1440px;
+
+// Colors
+// ---------
+$color-white:                  #ffffff;
+$color-black:                  #000000;
+
+// Primary Colors
+$color-orange:                 #ff6c0c;
+$color-orange-accessible:      #D14900;
+$color-primary:                $color-orange-accessible;
+$color-primary-accessible:     $color-orange-accessible;
+
+// new colors
+$color-ltgray:                  #c8c8c8;
+$color-veryltgray:              #e5e5e5;
+$color-gray:                    #aaa99f;
+$color-medgray:                 #76777b;
+$color-dkgray:                  #616265;
+$color-ltbrngray:               #e9e7e4;
+$color-vltgray:                 #f3f1f1;  // for odd/even stripes
+$color-bodybg:                  #222222;  // from the Supernova brand specification
+$color-ltyellow:                #f8f199;  // for styles menu background color
+$color-fadedgray:               #666666;  // For low-importance teaser fields.
+$color-olivegreen:              #a9b734;
+$color-purple:                  #95348d;
+$color-darkteal:                #005e5c;
+$color-midgray:                 #afafaf;
+$color-darkergray:              #696b73;
+$color-crimson:                 #731936;
+$color-black-text:              #333333;
+$color-goldenrod:               #ecaa00;
+$color-maroon:                  #7a303f;
+
+// Bright Colors
+$color-bright-blue:            #00a1df;
+$color-bright-blue-accessible: #0072a8;
+$color-bright-aqua:            #1e988a;
+$color-bright-aqua-accessible: #168376;
+$color-bright-green:           #73a950;
+$color-bright-green-light:     #b6bd00;
+$color-bright-orange:          #f9be00;
+$color-bright-yellow:          #e2cc00;
+$color-bright-magenta:         #f54d80;
+
+// Deep Colors
+$color-deep-aqua:              #027db7; 
+$color-deep-blue:              #003b4c;
+$color-deep-green:             #005851;
+$color-deep-purple:            #644b78;
+$color-deep-maroon:            #7a303f;
+$color-deep-red:               #cf0a2c;
+$color-deep-orange:            #b54900;
+
+// Neutral Colors
+$color-cool-grey-accessible:   #737478;
+$color-cool-grey-2:            #ededed;
+$color-cool-grey-3:            #c8c8c8;
+$color-cool-grey-9:            #76777B;
+$color-grey-150:               #f0f0f0;
+$color-grey-200:               #849895;
+$color-grey-550:               #767676;
+$color-grey-600:               #666666;
+$color-grey-650:               #647774;
+$color-grey-700:               #4a4a4a;
+$color-grey-850:               #383838;
+$color-grey-800:               #333333;
+$color-grey-900:               #1b1b1b;
+$color-warm-grey:              #aaa99f;
+$color-blue-grey:              #949895;
+$color-green-grey:             #9dae88;
+$color-tan-grey:               #c7b784;
+$color-yellow-grey:            #f1d384;
+
+// Specialist text colors:
+$text-color-body:              $color-grey-800;
+$text-color-main-menu:         $color-grey-700;
+$text-color-white:             $color-white;
+$text-color-black:             $color-black;
+$text-color-grey:              $color-grey-800;
+$text-color-orange:            $color-orange-accessible;
+$link-color:                   $color-orange-accessible;
+
+// Gradients: see -mixins.scss
+// ------------------------------
+
+
+// Our responsive design is based on a 1200px wide grid, as per Bootstrap.
+// To pixel-bitch the width for something, use width: <intended>px / @responsive_grid_w * 100%;
+$content_width:                 1200px;
+$footer_height:                 75px;

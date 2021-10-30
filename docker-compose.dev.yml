@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  seedling:
+    user: root
+    volumes:
+      # Uncomment to do djunk development.
+      # - ../django-djunk/djunk:/seedling-ve/lib/python3.7/site-packages/djunk

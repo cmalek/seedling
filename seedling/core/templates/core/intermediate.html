@@ -1,0 +1,26 @@
+{% extends 'theme7/base.html' %}
+{% load i18n static seedling sass_tags %}
+
+{% block title %}{% trans 'Seedling' %}{% endblock %}
+{% block page_title %}{% trans 'Seedling' %}{% endblock %}
+{% block application_name %}{% trans 'Seedling' %}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% sass_src 'core/css/core.scss' %}">
+{% endblock %}
+
+{% block breadcrumbs %}
+  <nav aria-label="breadcrumb" class="ribbon__content__login__breadcrumbs">
+    <ol class="breadcrumb ribbon__content__login__breadcrumbs__breadcrumb">
+    {% block breadcrumb-items %}
+      {% breadcrumb 'Seedling' 'core:home' %}
+    {% endblock %}
+    </ol>
+  </nav>
+{% endblock %}
+
+{% block navigation %}
+  {% main_menu 'Home' %}
+{% endblock %}
+
+

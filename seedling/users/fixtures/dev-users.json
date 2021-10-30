@@ -1,0 +1,26 @@
+[
+    {
+        "model": "users.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$180000$BAoaPVF5J9be$ak+lP2/HAGFvjwyoMdnxrwGc269BfmG8s6zlwVE3UZg=",
+            "last_login": "2020-08-28T23:58:45.596Z",
+            "is_superuser": true,
+            "username": "root",
+            "first_name": "Super",
+            "last_name": "User",
+            "email": "imss-ads-staff@caltech.edu",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2020-08-28T23:58:36.244Z",
+            "fullname": "Super User",
+            "team": null,
+            "employee_number": null,
+            "caltech_status": "Missing",
+            "notes": "",
+            "groups": [],
+            "user_permissions": [],
+            "person_types": []
+        }
+    }
+]
