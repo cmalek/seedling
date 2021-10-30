@@ -9,35 +9,47 @@ from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 User = get_user_model()
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
+class UserDetailView(
+    LoginRequiredMixin,
+    DetailView
+):
 
     model = User
     slug_field = "username"
     slug_url_kwarg = "username"
 
 
-class UserListView(LoginRequiredMixin, ListView):
+class UserListView(
+    LoginRequiredMixin,
+    ListView
+):
 
     model = User
     slug_field = "username"
     slug_url_kwarg = "username"
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class UserUpdateView(
+    LoginRequiredMixin,
+    UpdateView
+):
 
     model = User
-    fields = ["name"]
+    fields = ["full_name"]
 
     def get_success_url(self):
-        return reverse("users:detail", kwargs={"username": self.request.user.username})
+        return reverse("users:user--detail", kwargs={"username": self.request.user.username})
 
     def get_object(self):
         return User.objects.get(username=self.request.user.username)
 
 
-class UserRedirectView(LoginRequiredMixin, RedirectView):
+class UserRedirectView(
+    LoginRequiredMixin,
+    RedirectView
+):
 
     permanent = False
 
     def get_redirect_url(self):
-        return reverse("users:detail", kwargs={"username": self.request.user.username})
+        return reverse("users:user--detail", kwargs={"username": self.request.user.username})

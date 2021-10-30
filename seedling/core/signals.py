@@ -5,9 +5,14 @@ core.apps.CoreConfig.ready(). See https://docs.djangoproject.com/en/1.9/topics/s
 from django.conf import settings
 from django.db.models.signals import pre_save, post_save, m2m_changed, pre_delete
 from django.dispatch.dispatcher import receiver
-from djunk.logging import log_model_changes, log_new_model, log_model_m2m_changes, log_model_deletion
 
-from ..logging import logger
+from ..logging import (
+    logger,
+    log_model_changes,
+    log_new_model,
+    log_model_m2m_changes,
+    log_model_deletion
+)
 
 # NOTE: Signals are not loaded by default. Uncomment the signals import line in core.apps.CoreConfig to enable them.
 

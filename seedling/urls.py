@@ -18,7 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.views import defaults as default_views
-import multitenancy.urls
+#import multitenancy.urls
 
 from .core import urls as core_urls
 
@@ -33,7 +33,7 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Add the root site interface
-urlpatterns += multitenancy.urls.urlpatterns
+#urlpatterns += multitenancy.urls.urlpatterns
 
 if settings.DEVELOPMENT:
     # We don't provide this in test/production because we don't want it there

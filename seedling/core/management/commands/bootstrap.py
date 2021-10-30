@@ -7,7 +7,7 @@ from django.db.migrations.loader import MigrationLoader
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
-from brigid.logging import logger  # noqa:E402
+from seedling.logging import logger  # noqa:E402
 
 
 class Command(BaseCommand):
@@ -32,10 +32,8 @@ class Command(BaseCommand):
         if self.db_is_fresh(DEFAULT_DB_ALIAS):
             call_command("migrate")
             if settings.DEVELOPMENT:
+                call_command("loaddata", "sites")
                 call_command("loaddata", "dev-users")
-                call_command("loaddata", "dev-tokens")
-            call_command("loaddata", "users")
-            call_command("loaddata", "aliases")
         elif settings.BOOTSTRAP_ALWAYS_MIGRATE:
             call_command("migrate")
         logger.info('migrate.end')

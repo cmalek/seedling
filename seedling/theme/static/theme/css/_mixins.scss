@@ -14,28 +14,27 @@
 // argument as a more descriptive mixin.
 @mixin landscape-phone-up {
   // Devices that are 480px+ wide.
-  @include media-breakpoint-up(sm) {
+  @media (min-width: $small-viewport) {
     @content;
   }
 }
 
 @mixin portrait-tablet-up {
   // Devices that are 768px+ wide.
-  @include media-breakpoint-up(md) {
+  @media (min-width: $medium-viewport) {
     @content;
   }
 }
 
 @mixin landscape-tablet-up {
-  // Devices that are 1024px+ wide.
-  @include media-breakpoint-up(lg) {
+  @media (min-width: $large-viewport) {
     @content;
   }
 }
 
 @mixin desktop-up {
   // Devices that are 1440px+ wide.
-  @include media-breakpoint-up(xl) {
+  @media (min-width: $extra-large-viewport) {
     @content;
   }
 }
@@ -43,7 +42,7 @@
 // For those times when you need to use a non-mobile-first media query to apply rules ONLY on portrait phones.
 // Only use when you ABSOLUTELY have to, since it violates Mobile First, which can cause havok in the rest of our CSS.
 @mixin portrait-phone-down {
-  @include media-breakpoint-down(sm) {
+  @media (max-width: $small-viewport) {
     @content;
   }
 }
@@ -153,6 +152,29 @@
 // The font-family for the whole site is Helvetica, so
 // we don't need to define it here, instead we define it on <body> in
 // _base_styles.scss
+
+@mixin breadcrumbs {
+  &__breadcrumb {
+    background-color: transparent;
+    margin-bottom: 0;
+    padding-top: 0.8rem;
+    a, a:visited {
+      color: $color-white;
+      font-weight: bold;
+    }
+  }
+  .breadcrumb-item {
+    font-size: 0.9em;
+    color: $color-white;
+    &.active {
+      color: $color-white;
+    }
+  }
+  .breadcrumb-item + .breadcrumb-item::before {
+    color: $color-white;
+    content: '>';
+  }
+}
 
 @mixin font-very-light {
   font-weight: 200;

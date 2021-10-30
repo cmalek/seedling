@@ -1,6 +1,6 @@
 from django import template
+from django.urls import reverse
 
-from djunk.utils import reverse_with_qs
 
 register = template.Library()
 
@@ -19,7 +19,7 @@ def breadcrumb(title, *args, **kwargs):
             url_args = args[1:]
     return {
         'title': title,
-        'url': reverse_with_qs(url_name, *url_args, **kwargs) if url_name else None
+        'url': reverse(url_name, *url_args, **kwargs) if url_name else None
     }
 
 

@@ -11,8 +11,8 @@ from seedling.users.views import (
 
 app_name = "users"
 urlpatterns = [
-    path("", view=UserListView.as_view(), name="list"),
-    path("~redirect/", view=UserRedirectView.as_view(), name="redirect"),
-    path("~update/", view=UserUpdateView.as_view(), name="update"),
-    path("<str:username>/", view=UserDetailView.as_view(), name="detail"),
+    path("", view=UserListView.as_view(), name="users--list"),
+    path("~redirect/", view=UserRedirectView.as_view(), name="user--redirect"),
+    path("~update/", view=UserUpdateView.as_view(), name="user--update"),
+    path("<str:username>/", view=UserDetailView.as_view(), name="user--detail"),
 ]

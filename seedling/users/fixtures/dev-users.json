@@ -13,14 +13,9 @@
             "is_staff": true,
             "is_active": true,
             "date_joined": "2020-08-28T23:58:36.244Z",
-            "fullname": "Super User",
-            "team": null,
-            "employee_number": null,
-            "caltech_status": "Missing",
-            "notes": "",
+            "full_name": "Super User",
             "groups": [],
-            "user_permissions": [],
-            "person_types": []
+            "user_permissions": []
         }
     }
 ]

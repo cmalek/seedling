@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   {# As of June 2018, this is the most up-to-date "responsive design" viewport tag. #}
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" href="{% static 'theme/images/apple-touch-icon.png' %}">
-  <link rel="apple-touch-icon" sizes="120x120" href="{% static 'theme/images/apple-touch-icon-120x120-precomposed.png' %}">
-  <link rel="apple-touch-icon" sizes="152x152" href="{% static 'theme/images/apple-touch-icon-152x152-precomposed.png' %}">
-  <link rel="apple-touch-icon" sizes="167x167" href="{% static 'theme/images/apple-touch-icon-167x167-precomposed.png' %}">
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'theme/images/apple-touch-icon-180x180-precomposed.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'theme/img/apple-touch-icon.png' %}">
+  <link rel="apple-touch-icon" sizes="120x120" href="{% static 'theme/img/apple-touch-icon-120x120-precomposed.png' %}">
+  <link rel="apple-touch-icon" sizes="152x152" href="{% static 'theme/img/apple-touch-icon-152x152-precomposed.png' %}">
+  <link rel="apple-touch-icon" sizes="167x167" href="{% static 'theme/img/apple-touch-icon-167x167-precomposed.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'theme/img/apple-touch-icon-180x180-precomposed.png' %}">
   <title>
     {% block title %}{% endblock %}
   </title>
@@ -18,18 +18,15 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-  <link rel="stylesheet" href="{% sass_src 'theme7/css/theme.scss' %}">
+  <link rel="stylesheet" href="{% sass_src 'theme/css/theme.scss' %}">
 
   {% block extra_css %}
     {# Override this in templates to add extra stylesheets. #}
   {% endblock %}
 
-  {# Intentionally loaded synchronously as a prereq for other stylesheets. #}
-  <script src="{% static 'djunk/js/modernizr-2.6.2.min.js' %}"></script>
-
   {# Datatables need this loaded first #}
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>0
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
   {% block extra_header_js %}
     {# Override this in subtemplates to add additional javascript to the page. Remember to use defer. #}
@@ -40,50 +37,47 @@
   <div class="sr-only sr-only-focusable">
     <a href="#main-content-anchor">{% trans 'Skip to main content' %}</a>
   </div>
-  <div class="mb-1">
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <a class="navbar-brand" href="{% url 'home' %}">Seedling</a>
+  <div class="page responsive-container mt-5">
+    <div class="mb-5">
+      <nav class="navbar navbar-expand-md navbar-light bg-light p-3">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="{% url 'core:home' %}">Seedling</a>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'core:home' %}">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'core:about' %}">About</a>
-          </li>
-          {% if request.user.is_authenticated %}
-            <li class="nav-item">
-              {# URL provided by django-allauth/account/urls.py #}
-              <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% translate "My Profile" %}</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'core:home' %}">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-              {# URL provided by django-allauth/account/urls.py #}
-              <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
-            </li>
-          {% else %}
-            <li class="nav-item">
-              {# URL provided by django-allauth/account/urls.py #}
-              <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
-            </li>
-            <li class="nav-item">
-              {# URL provided by django-allauth/account/urls.py #}
-              <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
-            </li>
-          {% endif %}
-        </ul>
-      </div>
-    </nav>
-  </div>
-  <div class="page responsive-container">
-    <div class="page__header d-flex flex-column flex-md-row align-items-md-end pb-4">
+            {% if request.user.is_authenticated %}
+              <li class="nav-item">
+                {# URL provided by django-allauth/account/urls.py #}
+                <a class="nav-link" href="{% url 'users:user--detail' request.user.username  %}">{% translate "My Profile" %}</a>
+              </li>
+              <li class="nav-item">
+                {# URL provided by django-allauth/account/urls.py #}
+                <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                {# URL provided by django-allauth/account/urls.py #}
+                <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
+              </li>
+              <li class="nav-item">
+                {# URL provided by django-allauth/account/urls.py #}
+                <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="page__header d-flex flex-column flex-md-row align-items-md-center pb-4">
       {% block logo_title %}
         {# Sites which should not have Caltech branding can override the logo_title block to replace this. #}
-        <img class="page__header__logo" src="{% static 'theme/images/logo.png' %}" alt="Seedling">
+        <img class="page__header__logo" src="{% static 'theme/img/logo.png' %}" alt="Seedling">
         <h1 class="title header__title page__header__title">
           {% block application_name %}Seedling{% endblock %}
         </h1>

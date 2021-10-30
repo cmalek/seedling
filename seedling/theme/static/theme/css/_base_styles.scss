@@ -1,11 +1,11 @@
 html {
-  font-size: $font-size-in-html;
+  font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   @include landscape-phone-up {
     height: 100%;
   }
-  font-family: $font_vaud;
+  font-family: Helvetica, sans-serif;
 }
 
 body {
@@ -20,7 +20,7 @@ body {
 }
 
 #skip-link {
-  z-index: $banner-z + 500;
+  z-index: 1000;
   position: fixed;
 
   a {

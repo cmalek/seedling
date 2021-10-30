@@ -11,13 +11,14 @@
   }
 
   &__logo {
-    width: 120px;
+    width: 80px;
+    height: 80px;
     display: inline-block;
     img {
       width: 100%;
     }
     @include portrait-tablet-up {
-      width: 160px;
+      width: 80px;
       img {
         vertical-align: baseline;
       }

@@ -7,9 +7,6 @@ Sphinx==2.0.1                                 # https://github.com/sphinx-doc/sp
 
 # Development
 # ------------------------------------------------------------------------------
-django-debug-toolbar>=2.2                     # https://github.com/jazzband/django-debug-toolbar
-django-debug-toolbar-template-profiler>=2.0.1 # https://github.com/node13h/django-debug-toolbar-template-profiler
-django-queryinspect==1.1.0                    # https://github.com/dobarkod/django-queryinspect
 autopep8>=1.5.4                               # https://github.com/hhatto/autopep8
 flake8>=3.8.4                                 # https://github.com/PyCQA/flake8
 

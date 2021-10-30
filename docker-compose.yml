@@ -1,6 +1,8 @@
+---
 version: "3.8"
 
 services:
+
   seedling:
     image: seedling:latest
     container_name: seedling
@@ -9,19 +11,10 @@ services:
     ports:
       - "8443:8443"
     env_file:
-      - /etc/context.d/seedling.env
+      - .env
     depends_on:
       - mysql
-    volumes:
-      # Mounts the repo into the container, so that local changes will be picked up without rebuilding.
-      - .:/seedling
-      # Mount the dev cert and key that we use into the folders where the server will pick them up.
-      - ../ads-dev-certs/localhost.crt:/etc/pki/tls/certs/localhost.crt
-      - ../ads-dev-certs/localhost.key:/etc/pki/tls/private/localhost.key
-    # NOTE: If your container absolutely NEEDS to have working database access from the moment it starts, uncomment this
-    # line. Otherwise, leave it commented out. Using it will likely lead to frustration when you deploy, since it
-    # overrides the CMD instruction in the Dockerfile.
-    # command: bin/wait-for-it.sh mysql:3306 --and /usr/local/bin/supervisord
+    command: bin/wait-for-it.sh mysql:3306 --and /usr/local/bin/supervisord
 
   mysql:
     image: mysql:8.0.23
@@ -32,30 +25,25 @@ services:
       # removes error messages like: mbind: Operation not permitted
       - SYS_NICE
     ports:
-      # Expose port 3306 on the container as port 3307 on the host, so that sql clients can connect to it.
+      # Expose port 3306 on the container as port 3307 on the host, so that sql
+      # clients can connect to it.
       - "3307:3306"
     volumes:
       - ./sql/docker/my.cnf:/etc/mysql/conf.d/dev.cnf
-      # This will cause the sql files in sql/docker to be executed automatically when the server first starts up.
       - ./sql/docker:/docker-entrypoint-initdb.d
-      # Mount the sql server's filesystem into a Docker Volume, so it persists across invocations of the container.
-      # To delete the database and start over, run: docker volume rm seedling_mysql_data
+      # Mount the sql server's filesystem into a Docker Volume, so it persists
+      # across invocations of the container.  To delete the database and start
+      # over, run: docker volume rm seedling_seedling_data
       - seedling_data:/var/lib/mysql
-      # To use a local folder to store the database files, rather than a Docker Volume, uncomment the line
-      # below, and comment out the line immediately above.
-      # - ./sql/docker/mysql-data:/var/lib/mysql
 
-# Uncomment if your app needs to send mail
-# ------------------------------------------
-#  mail:
-#    image: mailhog/mailhog
-#    container_name: mail
-#    ports:
-#      - 1025:1025
-#      - 8025:8025
+  mail:
+    image: mailhog/mailhog
+    container_name: mail
+    ports:
+      - 1025:1025
+      - 8025:8025
 
 volumes:
-  # The Docker volume in which the database's files are stored. Works in tandem with the "mysql8_data:/var/lib/mysql"
-  # volume mount defined above.
+  # The Docker volume in which the database's files are stored. Works in tandem
+  # with the "mysql8_data:/var/lib/mysql" volume mount defined above.
   seedling_data:
-

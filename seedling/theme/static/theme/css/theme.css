@@ -1,0 +1,180 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
+/* ===================================================================
+   Use these in your CSS via the SCSS mixin syntax.  Example:
+
+   @import "_mixins.less";
+
+   .my_title {
+     @include serif-title();
+   }
+=================================================================== */
+/*
+  Turn a <ul> or <ol> into a set of all caps,
+  white links, horizontally oriented.  Usage:
+
+  .my-nav {
+    @include all-caps-horizontal-links();
+  }
+
+*/
+/*
+  Center something in the browser window, and make it
+  be @responsive_grid_w wide.  Usage:
+
+  .my-div {
+    @include page-width-centered();
+  }
+*/
+html {
+  font-size: 10px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: Helvetica, sans-serif; }
+  @media (min-width: 480px) {
+    html {
+      height: 100%; } }
+body {
+  min-height: 100vh;
+  height: 100%;
+  font-size: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  font-family: Helvetica, sans-serif; }
+
+#skip-link {
+  z-index: 1000;
+  position: fixed; }
+  #skip-link a {
+    color: white; }
+
+.sr-only {
+  font-size: 15px; }
+
+h1 {
+  color: #333333;
+  font-size: 3.4rem;
+  line-height: 6rem; }
+
+h2 {
+  color: #333333;
+  font-size: 2.8rem;
+  line-height: 4.2rem; }
+
+h3 {
+  color: #333333;
+  font-size: 2.2rem;
+  line-height: 3.2rem; }
+
+h4 {
+  font-size: 1.8rem;
+  line-height: 2.6rem;
+  font-weight: bold; }
+
+h5 {
+  line-height: 2.4rem;
+  font-weight: bold; }
+
+h6 {
+  font-size: 1.6rem;
+  line-height: 2rem;
+  font-weight: bold; }
+  @media (min-width: 1024px) {
+    h6 {
+      font-size: 1.4rem; } }
+p {
+  color: #333333;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  margin-bottom: 2.4rem; }
+  @media (min-width: 1024px) {
+    p {
+      line-height: 2.8rem;
+      margin-bottom: 3rem; } }
+pre {
+  font-size: 1.2rem;
+  margin-left: 2rem;
+  margin-bottom: 2.4rem; }
+  @media (min-width: 1024px) {
+    pre {
+      font-size: 1.4rem;
+      margin-left: 3rem;
+      margin-bottom: 3rem; } }
+/* ==================
+   Page Header
+   ================== */
+.page__header {
+  margin: 1.5rem 0 0 0;
+  padding-left: 10px;
+  padding-right: 10px; }
+  @media (min-width: 1440px) {
+    .page__header {
+      padding-left: 0;
+      padding-right: 0; } }
+  @media (min-width: 768px) {
+    .page__header {
+      height: 3em;
+      margin: 2em 0; } }
+  .page__header__logo {
+    width: 120px;
+    display: inline-block; }
+    .page__header__logo img {
+      width: 100%; }
+    @media (min-width: 768px) {
+      .page__header__logo {
+        width: 160px; }
+        .page__header__logo img {
+          vertical-align: baseline; } }
+  .page__header__title {
+    width: 100%;
+    font-size: 2.3rem; }
+    .page__header__title a, .page__header__title a:visited {
+      color: #000000;
+      text-decoration: none; }
+    @media (min-width: 480px) {
+      .page__header__title {
+        font-size: 3.2rem;
+        margin: 0 0 -22px 2rem; } }
+/* =========================================
+   The container for our actual page content
+   ========================================= */
+.responsive-container {
+  width: 100%;
+  margin: auto; }
+  @media (min-width: 1440px) {
+    .responsive-container {
+      width: 1200px; } }
+.page {
+  flex: 1 0 auto; }
+  .page__content {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 3em; }
+    @media (min-width: 1440px) {
+      .page__content {
+        padding-left: 0;
+        padding-right: 0; } }
+  .page__navigation {
+    margin-bottom: 3rem; }
+
+/* ==================
+   Page Footer
+   ================== */
+.footer {
+  font-size: 1.3rem; }
+  .footer__content {
+    padding: 10px; }
+    .footer__content__contact {
+      line-height: 1.4;
+      color: #eee; }
+    .footer__content__links {
+      margin: 0;
+      font-size: 0.8em; }
+      .footer__content__links a, .footer__content__links a:visited {
+        color: #ffffff !important;
+        text-transform: uppercase;
+        font-weight: bold; }
+      .footer__content__links li {
+        display: inline-block;
+        padding-left: 1.25em; }
+        .footer__content__links li:first-child {
+          padding-left: 0; }

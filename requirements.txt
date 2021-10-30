@@ -2,6 +2,7 @@
 # ------------------------------------------------------------------------------
 # When you update django in this file, update the links in settings.py, too!
 django==3.2.8                                 # https://www.djangoproject.com/
+django-allauth==0.45.0                        # https://github.com/pennersr/django-allauth
 django-autocomplete-light==3.8.2              # https://github.com/yourlabs/django-autocomplete-light
 django-braces==1.14.0                         # https://github.com/brack3t/django-braces
 django-compressor==2.4.1                      # https://github.com/django-compressor/django-compressor
@@ -15,6 +16,8 @@ django-redis==5.0.0                           # https://github.com/jazzband/djan
 django-storages==1.12.3                       # https://github.com/jschneier/django-storages
 django-wildewidgets==0.7.3                    # https://github.com/caltechads/django-wildewidgets
 django-xff==1.3.0                             # https://github.com/ferrix/xff/
+django-click==2.2.0                           # https://github.com/ferrix/xff/
+django-filter==2.4.0                          # https://github.com/carltongibson/django-filter
 
 # DRF
 # ------------------------------------------------------------------------------
@@ -44,3 +47,10 @@ gunicorn==20.1.0                              # https://github.com/benoitc/gunic
 # --- SASS Processing
 django-sass-processor==1.1                    # https://github.com/jrief/django-sass-processor
 libsass==0.21.0
+
+
+# Development
+# ------------------------------------------------------------------------------
+django-debug-toolbar>=2.2                     # https://github.com/jazzband/django-debug-toolbar
+django-debug-toolbar-template-profiler>=2.0.1 # https://github.com/node13h/django-debug-toolbar-template-profiler
+django-queryinspect==1.1.0                    # https://github.com/dobarkod/django-queryinspect

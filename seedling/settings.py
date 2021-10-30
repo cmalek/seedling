@@ -14,7 +14,7 @@ import logging
 import logging.config
 import sentry_sdk
 import structlog
-from djunk.logging_handlers import ConsoleRenderer
+from seedling.logging import ConsoleRenderer
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from .logging import censor_password_processor, request_context_logging_processor
@@ -57,10 +57,12 @@ TIME_ZONE = 'America/Los_Angeles'
 USE_I18N = False
 USE_L10N = False
 USE_TZ = True
+SITE_ID = 1
 
 # DATABASES
 # -----------
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 if TESTING:
     DATABASES = {
         'default': {
@@ -122,6 +124,7 @@ WSGI_APPLICATION = f'{PROJECT_NAME}.wsgi.application'
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
+    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -132,8 +135,11 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
+    "crispy_bootstrap5",
     "allauth",
     "allauth.account",
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
     "allauth.socialaccount",
     'storages',
     'django_js_reverse',
@@ -151,10 +157,12 @@ LOCAL_APPS = [
     f'{PROJECT_NAME}.theme',
 ]
 # https://docs.djangoproject.com/en/3.2/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+# We need to have LOCAL_APPS first so our template overriding for third party and django apps will work
+INSTALLED_APPS = LOCAL_APPS + DJANGO_APPS + THIRD_PARTY_APPS
 
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
+LOGIN_REDIRECT_URL = '/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
@@ -162,7 +170,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Use our custom User model instead of auth.User, because it's good practice to define a custom one at the START.
-AUTH_USER_MODEL = 'users.CAPUser'
+AUTH_USER_MODEL = 'users.User'
 
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
@@ -406,7 +414,7 @@ LOGGING = {
     },
     'filters': {
         'require_development_true': {
-            '()': 'djunk.logging.RequireDevelopmentTrueFilter',
+            '()': 'seedling.logging.RequireDevelopmentTrueFilter',
         },
     },
     'formatters': {
@@ -433,6 +441,10 @@ logging.config.dictConfig(LOGGING)
 # This setting is used by ADS's custom model change logging code. By default we skip logging changes to sessions and
 UNLOGGED_MODELS = ['sessions.Session']
 
+# Seedling
+# ------------------------------------------------------------------------------
+BOOTSTRAP_ALWAYS_MIGRATE = True
+
 # unittest-xml-reporting
 # ------------------------------------------------------------------------------
 # https://github.com/xmlrunner/unittest-xml-reporting/tree/master/#django-support
@@ -448,13 +460,14 @@ MULTITENANCY_SITE_MODEL = 'multitenancy.Site'
 # django-crispy-forms
 # ------------------------------------------------------------------------------
 # http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # django-allauth
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_REQUIRED = True
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
@@ -463,6 +476,42 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_ADAPTER = "seedling.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = "seedling.users.adapters.SocialAccountAdapter"
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+# Also: https://dev.to/gajesh/the-complete-django-allauth-guide-la3
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': lambda request: 'en_US',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.12',
+    },
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 
 # django-xff
 # ------------------------------------------------------------------------------
@@ -540,11 +589,5 @@ if TESTING:
     DEBUG = False
     # Silence certain loggers during tests, because they'd otherwise completely clog the output.
     logging.getLogger('elasticsearch').setLevel(logging.CRITICAL)
-
-    # Disable the debugging middleware during tests, so that it won't interfere with debugging of the test code itself.
-    # You can comment this out if you do actually need the debugging middleware for a certain test. Note, however,
-    # that it will prevent debugging the test code.
-    MIDDLEWARE.remove('djunk.middleware.PydevMiddleware')
-
     # Set the root logger to only display WARNING logs and above during tests.
     logging.getLogger('').setLevel(logging.WARNING)
